@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
+    "postbuild": "cp _redirects dist/_redirects",
+    "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview"
   },
