@@ -56,6 +56,7 @@ Initially a search form will be presented. Due to how the Met museum API works, 
 a long time, especially with larger page/result numbers. The following options are available:
 
 Met Museum:
+
     - Filter by department
     
     - Keyword search (enter query)
@@ -67,6 +68,7 @@ Met Museum:
     - Sort by
 
 VAM:
+
     - Keyword search
     
     - Maximum pages
