@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
-import { useLocation, Link } from "react-router"; // Updated import for 'react-router-dom'
+import { useLocation, Link } from "react-router";
 import Loading from "./Loading";
 import metRequests from "../Utilities/metMuseumApi";
 import vamRequests from "../Utilities/vamMuseum";
@@ -23,18 +23,18 @@ function AllArtworks({
   handleMuseumChange,
 }) {
   const location = useLocation();
-  const queryWords = new URLSearchParams(location.search).get("query") || ""; // Get query param
+  const queryWords = new URLSearchParams(location.search).get("query") || ""; // Get query param from the URL
 
   // Reset to the first page whenever the museum changes
   useEffect(() => {
-    setCurrentPage(1); // Reset to page 1 whenever the museum changes
+    setCurrentPage(1);
   }, [museum, setCurrentPage]);
 
   // Fetch artworks based on selected museum
   useEffect(() => {
     const fetchArtworks = async () => {
       setLoading(true);
-      setArtworks([]); // Reset artworks
+      setArtworks([]); // Reset artworks to avoid rendering issues
       try {
         if (museum === "The Met Museum") {
           // Get all valid object IDs for the search query
@@ -50,7 +50,6 @@ function AllArtworks({
           setArtworks(imagedArtworks);
           setLoading(false);
         } else if (museum === "Victoria and Albert Museum") {
-          // Fetch artworks from V&A (1000 artworks)
           const allArtworks = await vamRequests.fetchObjectsWithImages(1000); // Fetch 1000 artworks (this can be dynamic if needed)
 
           // Calculate the start and end index for pagination

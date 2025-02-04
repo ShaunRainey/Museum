@@ -12,24 +12,23 @@ function ViewExhibition() {
     setExhibition(exhibitions[exhibitionName] || { artworks: [] });
   }, [exhibitionName]);
 
-  // 🔥 Function to Delete an Artwork from the Exhibition
   const deleteArtwork = (artPieceID) => {
     if (!exhibition) return;
 
     const updatedExhibition = {
       ...exhibition,
       artworks: exhibition.artworks.filter(
-        (artPiece) => 
-          (artPiece.museum === "vam" ? artPiece.systemNumber : artPiece.objectID) !== artPieceID
+        (artPiece) =>
+          (artPiece.museum === "vam"
+            ? artPiece.systemNumber
+            : artPiece.objectID) !== artPieceID
       ),
     };
 
-    // Update localStorage
     const exhibitions = JSON.parse(localStorage.getItem("exhibitions")) || {};
     exhibitions[exhibitionName] = updatedExhibition;
-    localStorage.setItem("exhibitions", JSON.stringify(exhibitions));
+    localStorage.setItem("exhibitions", JSON.stringify(exhibitions)); // Update localStorage
 
-    // Update state to refresh UI
     setExhibition(updatedExhibition);
   };
 
@@ -42,51 +41,46 @@ function ViewExhibition() {
     );
   }
 
-  return (
-    <Container>
-      <h1>{exhibitionName} Exhibition</h1>
-      <Row className="g-4"> {/* Adds gap between cards */}
-  {exhibition.artworks.map((artPiece) => (
-    <Col md={4} key={artPiece.systemNumber || artPiece.objectID}>
-      <Card className="custom-card card-container">
-        <Card.Img
-          variant="top"
-          src={artPiece.museum === "vam"
-            ? `https://framemark.vam.ac.uk/collections/${artPiece.images?.[0]}/full/600,400/0/default.jpg`
-            : artPiece?.primaryImageSmall || "https://via.placeholder.com/150"}
-          alt={artPiece?.titles?.[0]?.title || artPiece?.title || "Artwork"}
-          className="Card-img"
-        />
-        <Card.Body className="custom-card-body">
-          <Card.Title className="card-title">{artPiece?.titles?.[0]?.title || artPiece?.title || "Untitled"}</Card.Title>
-          <div className="button-group">
-            <Button
-              variant="dark"
-              onClick={() => navigate(
-                artPiece.museum === "vam"
-                  ? `/vam-artwork/${artPiece.systemNumber}`
-                  : `/met-artwork/${artPiece.objectID}`
-              )}
-            >
-              View Artwork
-            </Button>
-            <Button
-              variant="danger"
-              onClick={() => deleteArtwork(
-                artPiece.museum === "vam" ? artPiece.systemNumber : artPiece.objectID
-              )}
-            >
-              Delete
-            </Button>
-          </div>
-        </Card.Body>
-      </Card>
-    </Col>
-  ))}
-</Row>
+return (
+  <Container>
+    <h1>{exhibitionName} Exhibition</h1>
+      <Row className="g-4">
+        {exhibition.artworks.map((artPiece) => (
+          <Col md={4} key={artPiece.systemNumber || artPiece.objectID}>
+            <Card className="custom-card card-container">
+              <Card.Img
+                variant="top"
+                src={artPiece.museum === "vam"
+                ? `https://framemark.vam.ac.uk/collections/${artPiece.images?.[0]}/full/600,400/0/default.jpg`
+                : artPiece?.primaryImageSmall || "https://via.placeholder.com/150"}
+                alt={artPiece?.titles?.[0]?.title || artPiece?.title || "Artwork"}
+                className="Card-img"
+              />
+              <Card.Body className="custom-card-body">
+              <Card.Title className="card-title">{artPiece?.titles?.[0]?.title || artPiece?.title || "Untitled"}</Card.Title>
+                <div className="button-group">
 
-    </Container>
-  );
+              <Button
+              variant="dark"
+              onClick={() => navigate(artPiece.museum === "vam" ? `/vam-artwork/${artPiece.systemNumber}`: `/met-artwork/${artPiece.objectID}`)}>
+              View Artwork
+              </Button>
+              
+              <Button
+              variant="danger"
+              onClick={() => deleteArtwork(artPiece.museum === "vam" ? artPiece.systemNumber : artPiece.objectID)}>
+              Delete
+              </Button>
+                  
+              </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
+  </Container>
+);
 }
 
 export default ViewExhibition;

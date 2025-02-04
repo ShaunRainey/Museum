@@ -7,7 +7,7 @@ function QuickSearch({onSearch}) {
     const [quickSearchTerm, setQuickSearchTerm] = useState("");
 
     const handleSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault(); // Stops the page from reloading on submission of search
         const searchTerm =  event.target.querySelector('input').value;
         onSearch(searchTerm);
     }

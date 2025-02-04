@@ -17,7 +17,7 @@ function IndividualArtwork({museum, artPiece, setArtPiece, loading, setLoading})
 
         // Only fetch data for the Met Museum
         if (museum === "The Met Museum") {
-          artPieceData = await metRequests.getObjectByID(objectID);  // ✅ Fetch from Met API
+          artPieceData = await metRequests.getObjectByID(objectID);
         }
 
         setArtPiece(artPieceData);
@@ -29,7 +29,7 @@ function IndividualArtwork({museum, artPiece, setArtPiece, loading, setLoading})
     };
 
     fetchArtPiece();
-  }, [objectID, museum]); // ✅ Ensure effect runs when museum changes
+  }, [objectID, museum]);
 
   const saveToExhibition = (artPiece) => {
     if (!artPiece) {
@@ -38,16 +38,16 @@ function IndividualArtwork({museum, artPiece, setArtPiece, loading, setLoading})
     }
 
     const exhibitions = JSON.parse(localStorage.getItem("exhibitions")) || {};
-    const exhibitionName = prompt("Enter the exhibition name:"); // Ask user for exhibition name
+    const exhibitionName = prompt("Enter the exhibition name:");
 
     if (!exhibitionName) return;
 
-    // Ensure exhibition entry exists with correct museum identifier
+    // Ensure exhibition entry exists with correct museum
     if (!exhibitions[exhibitionName]) {
-      exhibitions[exhibitionName] = { museum: "met", artworks: [] }; // ✅ Set museum as "met"
+      exhibitions[exhibitionName] = { museum: "met", artworks: [] };
     }
 
-    exhibitions[exhibitionName].artworks.push({ ...artPiece, museum: "met" }); // ✅ Ensure artwork has museum field
+    exhibitions[exhibitionName].artworks.push({ ...artPiece, museum: "met" });
 
     localStorage.setItem("exhibitions", JSON.stringify(exhibitions));
 
@@ -65,7 +65,6 @@ function IndividualArtwork({museum, artPiece, setArtPiece, loading, setLoading})
       return (
         <Container className="mt-4">
           <Row className="align-items-start">
-            {/* Left Column: Image + Button */}
             <Col md={5} className="d-flex flex-column align-items-center">
               <img
                 src={artPiece["primaryImage"] || "default-image.jpg"}
@@ -77,7 +76,6 @@ function IndividualArtwork({museum, artPiece, setArtPiece, loading, setLoading})
               </Button>
             </Col>
 
-            {/* Right Column: Text Information */}
             <Col md={7}>
               <h1 className="fw-bold">{artPiece.title || "Untitled"}</h1>
               <p><strong>Date:</strong> {artPiece.objectDate || "Unknown"}</p>

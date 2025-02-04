@@ -60,12 +60,13 @@ function DetailedSearch({artworks, setArtworks, currentPage, setCurrentPage,item
 
  useEffect(() => {
   setSearchInitiated(false);  // Reset search when the museum changes
-  setTotalResults([]);        // Clear the previous search results
-  setArtworks([]);            // Clear the artworks
+  setTotalResults([]);
+  setArtworks([]);            
   setCurrentPage(1);
-  setKeyword("")          // Reset the page to 1
+  setKeyword("")         
 }, [museum]);
 
+  //This sets the departments available in the search form
   useEffect(() => {
     if (museum === "The Met Museum") {
       const fetchDepartments = async () => {
@@ -87,11 +88,11 @@ function DetailedSearch({artworks, setArtworks, currentPage, setCurrentPage,item
       const fetchAllArtworks = async () => {
         if (!searchInitiated) return; // Do nothing if the search hasn't been initiated
         setLoading(true);
-        setArtworks([])
+        setArtworks([]) // Resets the artworks, important for if a search has already been submitted using a different API
 
         if (totalResults.length === 0) {
           const validObjects = await metRequests.getSearchElements(searchString, resultsPerPage, maxPages);
-
+          // This API doesn't support sorting, so it has to be enabled here
           if (sortBy === "Origin date (old - new)") {
             validObjects.sort((a, b) => (a["objectBeginDate"] || 0) - (b["objectBeginDate"] || 0))
           }
@@ -141,32 +142,21 @@ function DetailedSearch({artworks, setArtworks, currentPage, setCurrentPage,item
   useEffect(() => {
   // This will trigger when the museum, search, page, results per page, etc., change
   if (museum === "Victoria and Albert Museum") {
-    console.log("🚀 useEffect triggered for VAM museum");
 
-    // Calling fetchVamArtworks inside the effect
     const fetchVamArtworks = async () => {
-      console.log("🔍 fetchVamArtworks() called");
 
       setLoading(true);
       setArtworks([]); // Clear previous results
 
-      if (!searchInitiated) {
-        console.log("⏳ Skipping fetch - search not initiated");
-        return;
-      }
+      if (!searchInitiated) { return;}
 
       // Fetch data only if no results are saved or if resultsPerPage has changed
       if (totalResults.length === 0 || resultsPerPage !== itemsPerPage) {
-        console.log("🛠 Fetching new objects from VAM API...");
 
-        // Fetch objects from the VAM API
         const validObjects = await vamRequests.fetchObjectsWithImages(1000, keyword, sortBy);
-        
-        console.log("📦 API Response:", validObjects.length, "objects");
 
         const actualResults = validObjects.slice(0, maxPages * resultsPerPage);
-        setTotalResults(actualResults); // Set the total results
-        console.log("✅ totalResults updated:", actualResults.length);
+        setTotalResults(actualResults); 
       }
 
       // Slice the results for pagination
@@ -179,10 +169,8 @@ function DetailedSearch({artworks, setArtworks, currentPage, setCurrentPage,item
       }
 
       const paginatedResults = totalResults.slice(startIndex, endIndex);
-      console.log("🎨 Rendering:", paginatedResults.length, "artworks");
 
       if (paginatedResults.length === 0 && currentPage > 1) {
-        console.log("⚠️ No artworks found, resetting to page 1");
         setCurrentPage(1); // If no artworks found, reset to page 1
       } else {
         setArtworks(paginatedResults); // Display artworks for current page
@@ -190,13 +178,9 @@ function DetailedSearch({artworks, setArtworks, currentPage, setCurrentPage,item
 
       setLoading(false);
     };
-
-    // Trigger the API call
     fetchVamArtworks();
   }
 }, [currentPage, totalResults, searchInitiated, museum, maxPages, resultsPerPage]);
-
-
 
   const totalItems = totalResults.length;
   const totalPages = Math.ceil(totalItems / resultsPerPage);
@@ -321,7 +305,7 @@ function DetailedSearch({artworks, setArtworks, currentPage, setCurrentPage,item
 
                 <Form.Group className="mb-3">
                   <Form.Label>Maximum Pages</Form.Label>
-                  <p className="smallprint">(A higher number will increase API response time. Recommended to stay below 20)</p>
+                  <p className="smallprint">(A higher number will increase API response time. Recommended to stay below 10)</p>
                   <Form.Control as="select" onChange={handleMaximumPages}>
                     <option>Default (4)</option>
                     <option>2</option>

@@ -7,7 +7,7 @@ const fetchObjectsWithImages = async (numOfResults, query, sortBy) => {
     let queryString = "sculpture";
     let sort;
     let order;
-    // These sort functions are supported by the API call directly
+    // These sort functions are supported by the API call directly and can be handle here instead of in the front end
     if (sortBy === "Origin date (old - new)") { sort = "date"; order = "asc"; }
     if (sortBy === "Origin date (new - old)") { sort = "date"; order = "desc"; }
     if (sortBy === "Place of Origin (A-Z)") { sort = "place"; order = "asc"; }

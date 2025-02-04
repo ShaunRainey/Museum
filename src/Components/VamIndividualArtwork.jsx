@@ -40,10 +40,10 @@ function VamIndividualArtwork({ artPiece, setArtPiece, loading, setLoading }) {
 
     // Ensure exhibition entry exists with correct museum identifier
     if (!exhibitions[exhibitionName]) {
-      exhibitions[exhibitionName] = { museum: "vam", artworks: [] }; // ✅ Set museum as "vam"
+      exhibitions[exhibitionName] = { museum: "vam", artworks: [] };
     }
 
-    exhibitions[exhibitionName].artworks.push({ ...artPiece, museum: "vam" }); // ✅ Ensure artwork has museum field
+    exhibitions[exhibitionName].artworks.push({ ...artPiece, museum: "vam" });
 
     localStorage.setItem("exhibitions", JSON.stringify(exhibitions));
 
@@ -61,19 +61,17 @@ function VamIndividualArtwork({ artPiece, setArtPiece, loading, setLoading }) {
   return (
     <Container className="mt-4">
       <Row className="align-items-center">
-        {/* Left Column: Image + Button */}
         <Col md={5} className="d-flex flex-column align-items-center">
           <img
             src={`https://framemark.vam.ac.uk/collections/${artPiece["images"]?.[0]}/full/600,400/0/default.jpg`}
             alt={artPiece["titles"]?.[0]?.["title"] || "Artwork"}
-            className="artwork-image img-fluid mb-3" // Replaced className to match Met style
+            className="artwork-image img-fluid mb-3"
           />
           <Button variant="dark" onClick={() => saveToExhibition(artPiece)}>
             Save to Exhibition
           </Button>
         </Col>
 
-        {/* Right Column: Text Information */}
         <Col md={7}>
           <h1>{artPiece["titles"]?.[0]?.["title"] || "Untitled"}</h1>
           <p>Date: {artPiece?.["productionDates"]?.[0]?.["date"]?.["text"] || "Unknown Date of Origin"}</p>

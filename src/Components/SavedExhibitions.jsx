@@ -4,9 +4,7 @@ import { useState } from "react";
 
 function SavedExhibitions() {
   const navigate = useNavigate();
-  const [exhibitions, setExhibitions] = useState(
-    JSON.parse(localStorage.getItem("exhibitions")) || {}
-  );
+  const [exhibitions, setExhibitions] = useState(JSON.parse(localStorage.getItem("exhibitions")) || {});
 
   const deleteExhibition = (exhibitionName) => {
     if (window.confirm(`Are you sure you want to delete "${exhibitionName}"?`)) {
@@ -35,7 +33,6 @@ function SavedExhibitions() {
                   </span>
                 </Col>
                 <Col xs={3}>
-                  {/* Display museum source as a badge */}
                   <Badge bg={exhibitions[exhibition].museum === "vam" ? "info" : "secondary"}>
                     {/* {exhibitions[exhibition].museum.toUpperCase()} */}
                   </Badge>

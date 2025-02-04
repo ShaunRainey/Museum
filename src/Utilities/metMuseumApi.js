@@ -16,6 +16,7 @@ const getValidObjectNumbers = (searchWords) => {
   let searchString = "/search?q=isHighlight";
 
   if (searchWords) {
+    // splitting the query allows the function to deal with multiple words
     const searchArray = searchWords.split(" ");
     searchString = "/search?q=";
     searchArray.forEach((string) => {
@@ -56,10 +57,9 @@ const getObjectByID = async (objectID) => {
     // If objectID doesn't exist in response data, return null or handle it as needed
     return null;
   } catch (error) {
-    // Catch any errors that occur during the async request
     console.error(`Error fetching object with ID ${objectID}:`, error);
-    handleError(error); // You can call your custom error handler here if needed
-    return null; // Return null or handle error as needed
+    handleError(error);
+    return null; 
   }
 };
 
@@ -74,7 +74,9 @@ const getDepartments = () => {
 };
 
 const validIDCache = []; // Cache to store all valid object IDs
-
+// To handle pagination and avoid rendering random/repeat artworks, the cache is used. As each page is loaded, the cache is added to.
+// This will allow previous pages to be accessed instantly rather than waiting for an api call. Downside is that the API call is large and 
+// takes time to complete
 const getAllImagedArtworks = async (
   searchWords,
   page = 1,
@@ -82,7 +84,6 @@ const getAllImagedArtworks = async (
 ) => {
   let searchString = "/search?q=isHighlight";
 
-  // Apply search query if available
   if (searchWords) {
     const searchArray = searchWords.split(" ");
     searchString = "/search?q=";
@@ -108,11 +109,10 @@ const getAllImagedArtworks = async (
       try {
         const artworkResponse = await metMuseum.get(`/objects/${id}`);
         if (artworkResponse.data.primaryImageSmall) {
-          validIDCache.push(artworkResponse.data); // Add valid artwork object to the cache
+          validIDCache.push(artworkResponse.data); 
         }
       } catch (error) {
         console.log(`Error fetching artwork with ID ${id}:`, error);
-        // Skip invalid IDs
       }
       currentIndex++;
     }
@@ -155,6 +155,8 @@ const getRandomImagedArtworks = async (count = 9) => {
 };
 
 const getSearchElements = async (
+  // This sets up the detailed search component and allows for the handling of multiple parameters due to the restrictions of the specific
+  // api
   searchString = "/search?q=isHighlight",
   itemsPerPage = 9,
   numberOfPages = 4

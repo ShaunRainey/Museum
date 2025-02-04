@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 function MetExhibition({ exhibitionName, artworks }) {
   const navigate = useNavigate();
 
-  if (!artworks || artworks.length === 0) {
+  if (!artworks || artworks.length === 0) { //If the exhibition is empty, say so
     return (
       <Container>
         <h1>{exhibitionName} Exhibition</h1>
