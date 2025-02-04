@@ -57,15 +57,22 @@ a long time, especially with larger page/result numbers. The following options a
 
 Met Museum:
     - Filter by department
+    
     - Keyword search (enter query)
+    
     - Maximum pages - This will set a limit for results to be displayed
+    
     - Results per page - This will set a limit for the number of results rendered on a page
+    
     - Sort by
 
 VAM:
     - Keyword search
+    
     - Maximum pages
+    
     - Results per page
+    
     - Sort by
 
 ### Individual Artworks
